@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+<script>
+    function isPrime(num) {
+        if (num < 2) return false;
+        for (let i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i === 0) return false;
+        }
+        return true;
+    }
+
+    let n;
+    do {
+        n = parseInt(prompt("nhap so luong phan tu cua mang (n ≤ 50):"));
+    } while (isNaN(n) || n <= 0 || n > 50);
+
+    let a = [];
+    for (let i = 0; i < n; i++) {
+        let value = parseInt(prompt(`Nhap phan tu a[${i}]:`));
+        a.push(value);
+    }
+
+    let b = [];
+    for (let i = 0; i < a.length; i++) {
+        if (isPrime(a[i])) {
+            b.push(a[i]);
+        }
+    }
+
+    document.write("Mảng a: [" + a.join(", ") + "]<br>");
+    document.write("Mang b (chi chua so nguyen to): [" + b.join(", ") + "]");
+</script>
 </body>
 </html>
