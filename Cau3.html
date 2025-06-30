@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý Sổ Tiết Kiệm</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input { margin: 5px 0; padding: 5px; width: 100%; }
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+    table { margin-top: 20px; width: 100%; }
+    .form-group { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+<h2>Thêm Sổ Tiết Kiệm</h2>
+<div>
+  <div class="form-group">
+    <label>Mã sổ:</label>
+    <input type="text" id="maSo" maxlength="5">
+  </div>
+  <div class="form-group">
+    <label>Loại tiết kiệm:</label>
+    <input type="text" id="loaiTietKiem" maxlength="10">
+  </div>
+  <div class="form-group">
+    <label>Họ tên khách hàng:</label>
+    <input type="text" id="hoTen" maxlength="30">
+  </div>
+  <div class="form-group">
+    <label>CMND:</label>
+    <input type="number" id="cmnd">
+  </div>
+  <div class="form-group">
+    <label>Ngày mở sổ (dd/mm/yyyy):</label>
+    <input type="text" id="ngayMoSo" placeholder="dd/mm/yyyy">
+  </div>
+  <div class="form-group">
+    <label>Số tiền gửi:</label>
+    <input type="number" id="soTienGui">
+  </div>
+  <button onclick="themSo()">Thêm sổ</button>
+  <button onclick="xoaSo()">Xóa sổ</button>
+</div>
+
+<h3>Danh sách sổ tiết kiệm</h3>
+<table id="dsSo">
+  <thead>
+  <tr>
+    <th>Mã sổ</th><th>Loại</th><th>Họ tên</th><th>CMND</th><th>Ngày mở</th><th>Số tiền</th>
+  </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  class SoTietKiem {
+    constructor(maSo, loaiTietKiem, hoTen, cmnd, ngayMoSo, soTienGui) {
+      this.maSo = maSo;
+      this.loaiTietKiem = loaiTietKiem;
+      this.hoTen = hoTen;
+      this.cmnd = cmnd;
+      this.ngayMoSo = ngayMoSo;
+      this.soTienGui = soTienGui;
+    }
+  }
+
+  let danhSach = [];
+
+  function validate(so) {
+    const ngayRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!so.maSo || so.maSo.length > 5) return false;
+    if (!so.loaiTietKiem || so.loaiTietKiem.length > 10) return false;
+    if (!so.hoTen || so.hoTen.length > 30) return false;
+    if (!so.cmnd || isNaN(so.cmnd)) return false;
+    if (!ngayRegex.test(so.ngayMoSo)) return false;
+    if (!so.soTienGui || isNaN(so.soTienGui)) return false;
+    return true;
+  }
+
+  function themSo() {
+    const maSo = document.getElementById("maSo").value.trim();
+    if (danhSach.some(s => s.maSo === maSo)) {
+      alert("Mã sổ đã tồn tại!");
+      return;
+    }
+
+    const so = new SoTietKiem(
+            maSo,
+            document.getElementById("loaiTietKiem").value.trim(),
+            document.getElementById("hoTen").value.trim(),
+            document.getElementById("cmnd").value.trim(),
+            document.getElementById("ngayMoSo").value.trim(),
+            document.getElementById("soTienGui").value.trim()
+    );
+
+    if (!validate(so)) {
+      alert("Nhập sai dữ liệu. Vui lòng kiểm tra lại.");
+      return;
+    }
+
+    danhSach.push(so);
+    alert("Đã thêm thành công!");
+    hienThi();
+  }
+
+  function xoaSo() {
+    const ma = prompt("Nhập mã sổ cần xóa:");
+    if (!ma) return;
+
+    const index = danhSach.findIndex(s => s.maSo === ma);
+    if (index === -1) {
+      alert("Không tìm thấy mã sổ!");
+      return;
+    }
+
+    const xacNhan = confirm("Bạn có chắc muốn xóa?");
+    if (xacNhan) {
+      danhSach.splice(index, 1);
+      alert("Đã xóa thành công!");
+      hienThi();
+    }
+  }
+
+  function hienThi() {
+    const tbody = document.querySelector("#dsSo tbody");
+    tbody.innerHTML = "";
+    for (const so of danhSach) {
+      const row = `<tr>
+          <td>${so.maSo}</td>
+          <td>${so.loaiTietKiem}</td>
+          <td>${so.hoTen}</td>
+          <td>${so.cmnd}</td>
+          <td>${so.ngayMoSo}</td>
+          <td>${so.soTienGui}</td>
+        </tr>`;
+      tbody.innerHTML += row;
+    }
+  }
+</script>
+</body>
+</html>
