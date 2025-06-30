@@ -2,9 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Title</title>
 </head>
 <body>
-$END$
+<h2>Kiểm tra 2 phân số có bằng nhau không</h2>
+
+<label>Phân số 1:</label><br>
+Tử số: <input id="tu1" type="number"> -
+Mẫu số: <input id="mau1" type="number"><br><br>
+
+<label>Phân số 2:</label><br>
+Tử số: <input id="tu2" type="number"> -
+Mẫu số: <input id="mau2" type="number"><br><br>
+
+<button onclick="kiemTra()">Kiểm tra</button>
+
+<h3 id="ketqua"></h3>
+
+<script>
+  function soSanhPhanSo(a, b, c, d) {
+    return a * d === b * c;
+  }
+
+  function kiemTra() {
+    let tu1 = parseInt(document.getElementById("tu1").value);
+    let mau1 = parseInt(document.getElementById("mau1").value);
+    let tu2 = parseInt(document.getElementById("tu2").value);
+    let mau2 = parseInt(document.getElementById("mau2").value);
+
+    let ketQua = soSanhPhanSo(tu1, mau1, tu2, mau2);
+    document.getElementById("ketqua").innerText = "Kết quả: " + ketQua;
+  }
+</script>
 </body>
 </html>
